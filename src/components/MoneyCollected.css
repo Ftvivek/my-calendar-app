@@ -1,0 +1,137 @@
+/* MoneyCollected.css (Revised for Premium/Classic Look) */
+
+/* Define variables locally if not available globally (replace with your actual theme variables) */
+:root {
+    --money-color-bg: #ffffff;
+    --money-color-bg-alt: #f8f9fa; /* Slightly off-white for sections */
+    --money-color-text-primary: #2c2c2e; /* Darker text */
+    --money-color-text-secondary: #6e6e73; /* Grey text */
+    --money-color-border: #e5e5e5; /* Subtle border */
+    --money-color-accent: #007aff; /* Example accent (iOS blue) - choose your theme's */
+    --money-font-primary: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    --money-border-radius: 8px;
+    --money-shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+  
+  .money-collected-container {
+    padding: 1.25rem 1.5rem; /* Adjust padding as needed */
+    background-color: var(--money-color-bg);
+    border-radius: var(--money-border-radius);
+    box-shadow: var(--money-shadow-soft);
+    font-family: var(--money-font-primary);
+    border: 1px solid var(--money-color-border); /* Add a subtle border */
+    margin-bottom: 20px; /* Ensure spacing from other elements */
+  }
+  
+  /* --- Header Section --- */
+  .money-collected-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--money-color-border);
+  }
+  
+  .money-collected-header h3 {
+    margin: 0;
+    color: var(--money-color-text-primary);
+    font-size: 1.15em; /* Slightly smaller */
+    font-weight: 600; /* Semibold */
+  }
+  
+  .date-selector {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .date-selector label {
+    font-size: 0.9em;
+    color: var(--money-color-text-secondary);
+    font-weight: 500;
+  }
+  
+  .date-selector input[type="date"] {
+    padding: 5px 8px;
+    border: 1px solid var(--money-color-border);
+    border-radius: 5px; /* Slightly smaller radius */
+    font-size: 0.9em;
+    background-color: var(--money-color-bg-alt);
+    color: var(--money-color-text-primary);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .date-selector input[type="date"]:focus {
+    outline: none;
+    border-color: var(--money-color-accent);
+    box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.2); /* Example focus ring */
+  }
+  .date-selector input[type="date"]:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      background-color: #f0f0f0;
+  }
+  
+  
+  /* --- Body Section (Where Amounts Are Displayed) --- */
+  .money-collected-body {
+    display: flex;
+    justify-content: space-around; /* Distribute sections evenly */
+    gap: 1.5rem; /* Space between sections */
+    padding-top: 1rem; /* Space above sections */
+    text-align: center; /* Center text within sections */
+    min-height: 80px; /* Provide some space during loading */
+  }
+  
+  .collection-section {
+    flex: 1; /* Allow sections to grow equally */
+    padding: 1rem;
+    background-color: var(--money-color-bg-alt); /* Subtle background for sections */
+    border-radius: var(--money-border-radius);
+    border: 1px solid #f0f0f0; /* Even lighter border for sections */
+  }
+  
+  .collection-section h4 {
+    margin: 0 0 0.75rem;
+    color: var(--money-color-text-primary);
+    font-size: 1em;
+    font-weight: 600; /* Semibold */
+  }
+  
+  .collection-section p {
+    margin: 0.25rem 0; /* Reduced margin */
+    line-height: 1.5;
+    color: var(--money-color-text-secondary);
+    font-size: 1.1em; /* Make amount slightly larger */
+    font-weight: 500; /* Medium weight for amount */
+  }
+  
+  /* Style the label part differently if needed */
+
+  
+  .collection-section p.count-details {
+    font-size: 0.85em; /* Smaller font for count */
+    color: var(--money-color-text-secondary);
+    font-weight: 400; /* Normal weight */
+    margin-top: 5px;
+  }
+  
+  
+  /* --- Loading and Error States --- */
+  .money-collected-body p {
+    /* General styling for loading/error text when they are the only content */
+    width: 100%;
+    text-align: center;
+    font-style: italic;
+    color: var(--money-color-text-secondary);
+  }
+  
+  .money-collected-body p.error-message {
+    color: #dc3545; /* Standard error red */
+    font-weight: 500;
+    font-style: normal;
+  }
+  
+  /* Remove unused styles from the old version */
+  /* .collection-options, .collected-amounts, .total-label { ... } */

@@ -1,0 +1,263 @@
+/* --- AddStudentForm.css (Premium Mobile-First Redesign) --- */
+
+/* Inherit variables from global scope (ensure Calendar.css variables are defined e.g. in :root or a parent) */
+
+.add-student-form-overlay {
+  position: fixed;
+  inset: 0; /* shorthand for top: 0; right: 0; bottom: 0; left: 0; */
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6); /* Slightly darker overlay */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 15px; /* Padding for small screens */
+  backdrop-filter: blur(3px); /* Optional: Frosted glass effect */
+  animation: fadeIn 0.3s ease-out; /* Fade in animation */
+}
+
+.add-student-form-container {
+  background-color: var(--color-bg-white, #ffffff); /* Use variable, fallback */
+  padding: 25px 30px 30px 30px; /* More padding */
+  border-radius: var(--border-radius-large, 16px);
+  box-shadow: var(--shadow-medium, 0 8px 25px rgba(0, 0, 0, 0.15));
+  width: 100%; /* Take available width within padding */
+  max-width: 450px; /* Max width */
+  position: relative; /* For close button positioning */
+  max-height: 90vh; /* Limit height and allow scroll */
+  overflow-y: auto; /* Enable vertical scroll if content overflows */
+  animation: slideInUp 0.4s ease-out; /* Slide in animation */
+}
+
+/* Add keyframe animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInUp {
+  from { transform: translateY(30px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.add-student-form-container h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: var(--color-text-primary, #1d1d1f);
+  font-weight: 600;
+  font-size: 1.4em;
+}
+
+/* Close Button */
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  font-size: 1.8em;
+  font-weight: 300;
+  color: var(--color-text-secondary, #6e6e73);
+  cursor: pointer;
+  line-height: 1;
+  padding: 5px;
+  transition: color 0.2s ease;
+}
+.close-button:hover {
+  color: var(--color-text-primary, #1d1d1f);
+}
+
+
+/* Form elements */
+.form-group {
+  margin-bottom: 20px; /* Increased spacing */
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px; /* More space below label */
+  color: var(--color-text-primary, #333);
+  font-weight: 500; /* Slightly bolder */
+  font-size: 0.95em;
+}
+
+.form-group label .required {
+  color: #e53e3e; /* Red color for asterisk */
+  margin-left: 2px;
+}
+
+.form-group input[type="text"],
+.form-group input[type="tel"],
+.form-group input[type="date"], /* Include date input */
+.form-group textarea {
+  width: 100%;
+  padding: 12px 15px; /* More padding */
+  border: 1px solid var(--color-border, #ccc);
+  border-radius: var(--border-radius-medium, 8px);
+  box-sizing: border-box;
+  font-size: 1em;
+  font-family: var(--font-primary, sans-serif);
+  color: var(--color-text-primary, #333);
+  background-color: var(--color-bg-light, #f8f9fa); /* Light background for input */
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-group input[type="text"]:focus,
+.form-group input[type="tel"]:focus,
+.form-group input[type="date"]:focus, /* Include date input focus */
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--color-primary, #5E5CE6);
+  box-shadow: 0 0 0 2px var(--color-primary-light, rgba(94, 92, 230, 0.2));
+  background-color: var(--color-bg-white, #fff);
+}
+
+.form-group textarea {
+  resize: vertical; /* Allow vertical resize only */
+  min-height: 80px;
+}
+
+/* --- Specific Styling for Admission Date Input --- */
+.form-group input[type="date"] 
+  /* You can add specific styls here if needed */
+  /* For example, adjust the font size or padding if it looks diffe
+
+/* Style the calendar dropdown arrow (may not work on all browsers consistently) */
+.form-group input[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 0.8;
+  cursor: pointer;
+  filter: invert(var(--invert-filter, 0%)); /* If you have an invert filter in dark mode */
+}
+
+/* Style the clear button in date input (if browser provides one) */
+.form-group input[type="date"]::-webkit-clear-button {
+  -webkit-appearance: none;
+  appearance: none;
+  /* Add custom styling if desired */
+}
+/* --- End of Admission Date Specific Styling --- */
+
+
+/* Styling for custom file input */
+.file-group {
+  position: relative;
+}
+
+.file-input-hidden {
+  /* Hide the actual input */
+  opacity: 0;
+  position: absolute;
+  z-index: -1;
+  width: 0.1px;
+  height: 0.1px;
+  overflow: hidden;
+}
+
+.file-label {
+  display: inline-flex; /* Use inline-flex */
+  align-items: center;
+  padding: 10px 15px;
+  border: 1px dashed var(--color-border, #ccc);
+  border-radius: var(--border-radius-medium, 8px);
+  cursor: pointer;
+  background-color: var(--color-bg-light, #f8f9fa);
+  color: var(--color-text-secondary, #555);
+  font-size: 0.95em;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+  width: 100%; /* Make label full width */
+  justify-content: center; /* Center content */
+  text-align: center;
+}
+
+.file-label:hover {
+  border-color: var(--color-primary, #5E5CE6);
+  background-color: var(--color-bg-white, #fff);
+}
+
+.file-label svg {
+  margin-right: 8px;
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+
+.file-label span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: calc(100% - 30px); /* Prevent long filenames from breaking layout */
+}
+
+/* Add focus styles for the label when the hidden input is focused */
+.file-input-hidden:focus + .file-label {
+  outline: none;
+  border-color: var(--color-primary, #5E5CE6);
+  box-shadow: 0 0 0 2px var(--color-primary-light, rgba(94, 92, 230, 0.2));
+}
+
+
+/* Form Actions (Buttons) */
+.form-actions {
+  display: flex; /* Use flexbox */
+  justify-content: flex-end; /* Align buttons to the right */
+  gap: 12px; /* Space between buttons */
+  margin-top: 30px; /* More space above buttons */
+}
+
+.form-actions button {
+  padding: 12px 25px; /* Generous padding */
+  border-radius: var(--border-radius-medium, 8px);
+  cursor: pointer;
+  font-size: 1em;
+  font-weight: 500;
+  transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  border: 1px solid transparent; /* Base border */
+}
+
+.form-actions button.button-submit {
+  background-color: var(--color-success, #34C759); /* Match calendar add button */
+  color: var(--color-text-on-primary, #fff);
+  border-color: var(--color-success, #34C759);
+}
+
+.form-actions button.button-submit:hover {
+  background-color: var(--color-success-dark, #2DA44E);
+  border-color: var(--color-success-dark, #2DA44E);
+  box-shadow: var(--shadow-soft, 0 4px 15px rgba(0, 0, 0, 0.1));
+}
+
+.form-actions button.button-cancel {
+  background-color: var(--color-bg-white, #fff);
+  color: var(--color-text-secondary, #555);
+  border: 1px solid var(--color-border, #ccc);
+}
+
+.form-actions button.button-cancel:hover {
+  background-color: var(--color-bg-light, #f8f9fa);
+  border-color: #bbb; /* Slightly darken border on hover */
+  color: var(--color-text-primary, #333);
+}
+
+.form-actions button:active {
+  transform: scale(0.97); /* Press effect */
+  box-shadow: none;
+}
+
+/* Error Message */
+.error-message {
+  color: #e53e3e;
+  font-size: 0.9em;
+  margin-top: 10px;
+  text-align: center;
+}
+
+/* Uploading Message */
+p {
+  text-align: center;
+  margin-top: 10px;
+  color: var(--color-primary, #5E5CE6);
+  font-style: italic;
+}
+
+/* --- End of AddStudentForm.css --- */

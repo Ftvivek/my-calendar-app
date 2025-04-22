@@ -1,0 +1,283 @@
+/* === Student Profile CSS - Enhanced === */
+
+/* --- Variables (Define or import from a global sheet) --- */
+:root {
+  --profile-primary-font: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  --profile-container-bg: #ffffff;
+  --profile-border-color: #e5e7eb; /* Softer gray */
+  --profile-shadow: 0 5px 15px rgba(0, 0, 0, 0.06); /* Refined shadow */
+  --profile-header-color: #1f2937; /* Dark gray */
+  --profile-text-primary: #374151; /* Slightly lighter text */
+  --profile-text-secondary: #6b7280; /* Gray for labels/less emphasis */
+  --profile-link-color: #3b82f6; /* Blue */
+  --profile-link-hover-color: #2563eb; /* Darker blue */
+  --profile-error-color: #ef4444; /* Red */
+  --profile-error-bg: #fef2f2; /* Light red bg */
+  --profile-error-border: #fca5a5; /* Lighter red border */
+  --profile-placeholder-bg: #f3f4f6; /* Light gray for placeholders */
+  --profile-placeholder-color: #9ca3af;
+  --profile-base-radius: 8px;
+  --profile-photo-radius: 50%;
+  --profile-focus-ring: rgba(59, 130, 246, 0.4); /* Subtle blue focus */
+  --profile-transition: 0.2s ease-in-out;
+}
+
+/* --- Main Container --- */
+.student-profile-container {
+  max-width: 700px; /* Slightly wider */
+  margin: 40px auto; /* More vertical space */
+  padding: 35px; /* Increased padding */
+  background-color: var(--profile-container-bg);
+  border: 1px solid var(--profile-border-color);
+  border-radius: var(--profile-base-radius);
+  box-shadow: var(--profile-shadow);
+  font-family: var(--profile-primary-font);
+  position: relative; /* For back link positioning */
+  overflow: hidden; /* Contains child elements nicely */
+}
+
+/* --- Refined Back Link (Positioned Top Left) --- */
+.profile-back-link { /* Apply this class to your Link/a tag */
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  position: absolute;
+  top: 20px; /* Adjust positioning */
+  left: 25px;
+  padding: 6px 12px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--profile-text-secondary);
+  background-color: transparent;
+  border: 1px solid transparent; /* Transparent border initially */
+  border-radius: 6px;
+  text-decoration: none;
+  transition: background-color var(--profile-transition), color var(--profile-transition), border-color var(--profile-transition);
+  z-index: 2;
+}
+
+.profile-back-link svg { /* Assuming react-icons */
+  width: 1em;
+  height: 1em;
+}
+
+.profile-back-link:hover,
+.profile-back-link:focus {
+  color: var(--profile-link-color);
+  background-color: var(--profile-placeholder-bg); /* Subtle hover bg */
+  border-color: var(--profile-border-color);
+  text-decoration: none;
+  outline: none;
+}
+
+.profile-back-link:focus-visible {
+  box-shadow: 0 0 0 3px var(--profile-focus-ring);
+  border-color: var(--profile-link-color);
+}
+
+/* --- Profile Header --- */
+.profile-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px; /* More space */
+  padding-bottom: 25px; /* Increased padding */
+  border-bottom: 1px solid var(--profile-border-color); /* Softer border */
+  margin-top: 40px; /* Ensure space below back link */
+}
+
+/* Container for Photo or Icon */
+.profile-image-container {
+  width: 90px; /* Increased size */
+  height: 90px;
+  margin-right: 25px; /* More spacing */
+  flex-shrink: 0; /* Prevent shrinking */
+  border-radius: var(--profile-photo-radius);
+  background-color: var(--profile-placeholder-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden; /* Ensures photo fits radius */
+  border: 2px solid var(--profile-border-color); /* Consistent border */
+}
+
+.profile-photo {
+  display: block; /* Remove potential bottom space */
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Maintain aspect ratio */
+  border-radius: var(--profile-photo-radius);
+}
+
+.user-icon-large { /* Fallback Icon */
+  font-size: 3rem; /* Relative to container */
+  color: var(--profile-placeholder-color);
+  line-height: 1;
+}
+
+.profile-header-info h2 {
+  margin: 0 0 5px 0; /* Added bottom margin */
+  font-size: 1.75rem; /* Slightly larger */
+  font-weight: 600;
+  color: var(--profile-header-color);
+  line-height: 1.2;
+}
+
+/* Optional: Add placeholder for grade or ID under the name */
+.profile-header-info .profile-subheading {
+  font-size: 1rem;
+  color: var(--profile-text-secondary);
+  margin: 0;
+}
+
+/* --- Profile Details Section --- */
+.profile-details {
+  margin-top: 20px; /* Adjusted */
+}
+
+.detail-item {
+  display: flex;
+  gap: 20px; /* Increased gap */
+  align-items: flex-start; /* Align top for longer values */
+  padding: 14px 5px; /* Adjusted padding */
+  margin-bottom: 5px; /* Reduced margin */
+  /* Use a subtle background alternation or border */
+   border-bottom: 1px solid var(--profile-border-color); /* Clean solid border */
+  /* background-color: #fdfdff; */ /* Example alternating bg */
+}
+/* Remove border from last item */
+.detail-item:last-child {
+  border-bottom: none;
+  padding-bottom: 5px; /* Reduce padding for last item */
+}
+
+.detail-item strong {
+  flex-basis: 140px; /* Increased label width */
+  flex-shrink: 0; /* Prevent shrinking */
+  font-weight: 500; /* Medium weight for label */
+  color: var(--profile-text-secondary); /* Label secondary color */
+  font-size: 0.95rem; /* Consistent font size */
+  padding-top: 1px; /* Align baseline slightly better */
+}
+
+.detail-item span,
+.detail-item a { /* Style value and links together */
+  flex-grow: 1;
+  color: var(--profile-text-primary);
+  font-size: 0.95rem;
+  word-break: break-word; /* Prevent long values overflowing */
+  line-height: 1.5; /* Improve readability */
+}
+
+.detail-item a {
+  color: var(--profile-link-color);
+  text-decoration: none;
+  transition: color var(--profile-transition), text-decoration var(--profile-transition);
+}
+
+.detail-item a:hover,
+.detail-item a:focus {
+  color: var(--profile-link-hover-color);
+  text-decoration: underline;
+  outline: none;
+}
+
+/* Special styling for file links maybe? */
+.id-proof-link svg { /* If you add an icon */
+ margin-left: 5px;
+ vertical-align: middle;
+ opacity: 0.7;
+}
+
+/* --- Loading/Error/Not Found States --- */
+.loading-state, .error-state, .not-found-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 50px 20px;
+  margin-top: 20px;
+  text-align: center;
+  min-height: 200px; /* Give states some visual height */
+}
+
+.state-icon { /* Common class for icons in states */
+  font-size: 3.5rem; /* Larger icons */
+  margin-bottom: 20px;
+  color: var(--profile-placeholder-color); /* Default icon color */
+}
+
+.loading-state .state-icon { /* Spinner */
+  color: var(--profile-link-color); /* Spinner matches link color */
+  animation: spin 1.5s linear infinite; /* Slightly slower spin */
+}
+
+.error-state {
+  background-color: var(--profile-error-bg);
+  border: 1px solid var(--profile-error-border);
+  border-radius: var(--profile-base-radius);
+  color: var(--profile-error-color); /* Error text color */
+  padding: 40px 20px; /* Specific padding for error box */
+}
+
+.error-state .state-icon {
+  color: var(--profile-error-color);
+}
+
+.not-found-state .state-icon {
+ opacity: 0.7; /* Make not found icon slightly faded */
+}
+
+.state-message {
+  font-size: 1.1rem;
+  color: var(--profile-text-secondary);
+  line-height: 1.6;
+}
+.error-state .state-message {
+   color: var(--profile-error-color); /* Ensure error message uses error color */
+   font-weight: 500;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* --- Responsive (Optional, but recommended) --- */
+@media (max-width: 768px) {
+  .student-profile-container {
+      margin: 20px 15px;
+      padding: 25px;
+  }
+  .profile-back-link {
+      position: static; /* Change positioning */
+      margin-bottom: 20px;
+      display: inline-flex; /* Keep it inline */
+  }
+  .profile-header {
+      flex-direction: column; /* Stack header items */
+      text-align: center;
+      margin-top: 0; /* Remove top margin if back link is static */
+  }
+  .profile-image-container {
+      width: 100px; /* Adjust size */
+      height: 100px;
+      margin-right: 0; /* No right margin when stacked */
+      margin-bottom: 15px; /* Margin below image */
+  }
+  .detail-item {
+      flex-direction: column; /* Stack label and value */
+      align-items: flex-start; /* Align left */
+      gap: 5px; /* Reduce gap */
+      padding: 10px 0;
+  }
+  .detail-item strong {
+      flex-basis: auto; /* Reset basis */
+      color: var(--profile-text-secondary); /* Ensure secondary color */
+      font-size: 0.85rem; /* Smaller label */
+      font-weight: 600; /* Bolder label */
+      text-transform: uppercase;
+  }
+  .detail-item span, .detail-item a {
+      padding-left: 0; /* No indent needed */
+  }
+}

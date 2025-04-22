@@ -1,0 +1,100 @@
+/* AllStudentList.css */
+.all-students-list-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(5px);
+    overflow: auto; /* Enable scrolling for the overlay */
+}
+
+.all-students-list-container {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    width: 90%;
+    max-width: 800px;
+    max-height: 90vh; /* Allow container to take up most of the viewport */
+    position: relative;
+    animation: fadeIn 0.3s ease-in-out;
+    border: 1px solid #e0e0e0;
+    display: flex;
+    flex-direction: column; /* Stack elements vertically */
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.all-students-list-container h2 {
+    color: #333;
+    font-size: 28px;
+    margin-top: 0;
+    margin-bottom: 25px;
+    text-align: center;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 15px;
+}
+
+.all-students-list-container ul.student-list {
+    list-style: none;
+    padding: 0;
+    flex-grow: 1; /* Allow list to take available space */
+    overflow-y: auto; /* Enable scrolling for the list itself */
+}
+
+.all-students-list-container li.student-item {
+    padding: 15px 0;
+    border-bottom: 1px solid #f0f0f0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    align-items: center;
+}
+
+.all-students-list-container li.student-item:last-child {
+    border-bottom: none;
+}
+
+.all-students-list-container li.student-item > span {
+    flex: 1 1 150px;
+    color: #555;
+}
+
+.all-students-list-container li.student-item > span.student-name {
+    font-weight: 600;
+    color: #333;
+    flex-basis: 200px;
+}
+
+.all-students-list-container button.close-button {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    color: #888;
+    font-size: 24px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    padding: 5px;
+}
+
+.all-students-list-container button.close-button:hover {
+    color: #333;
+}
+
+.all-students-list-container > p {
+    color: #777;
+    font-style: italic;
+    text-align: center;
+    margin-top: 20px;
+}

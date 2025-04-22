@@ -1,0 +1,496 @@
+/* --- CSS Variables (Refined for Premium/Classic Look) --- */
+:root {
+    --primary-font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; /* Prioritize system fonts */
+    --container-bg: #ffffff;
+    --container-border-color: #eaeaef; /* Even softer gray */
+    --container-shadow: 0 8px 24px rgba(18, 22, 33, 0.05); /* Subtle, deeper shadow */
+    --header-color: #1d1d1f; /* Near black for strong headers */
+    --text-color-primary: #2c2c2e; /* Dark gray for body text */
+    --text-color-secondary: #636366; /* Medium gray for secondary text */
+    --table-header-bg: #f7f7f8; /* Very subtle off-white */
+    --table-header-color: #515154; /* Slightly darker header text */
+    --table-border-color: #f0f0f2; /* Extremely light border */
+    --table-row-hover-bg: #f5f8fc; /* Very subtle blue/gray hover */
+    --table-row-even-bg: transparent; /* Remove alternating background for cleaner look */
+    --success-color: #30d158; /* Brighter, modern green */
+    --success-color-dark: #2baa4b;
+    --danger-color: #ff453a; /* Modern red */
+    --danger-color-dark: #ff2d21;
+    --info-color: #0a84ff; /* Modern blue */
+    --info-color-dark: #0060df;
+    --warning-color: #ff9f0a; /* Modern orange */
+    --focus-ring-color: rgba(10, 132, 255, 0.3); /* Softer blue focus ring */
+    --base-border-radius: 10px; /* Slightly larger radius */
+    --button-border-radius: 8px;
+    --base-padding: 16px;
+    --container-padding: 32px; /* Consistent padding */
+    --button-padding: 10px 22px; /* Adjusted padding */
+    --transition-speed: 0.25s; /* Slightly slower for smoother feel */
+    --transition-ease: ease-out; /* Changed easing */
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.04);
+    --shadow-md: 0 5px 10px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.08);
+    --spinner-color: var(--info-color);
+    --checkbox-accent-color: var(--info-color);
+}
+
+/* --- Global Box Sizing & Font Smoothing --- */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+body { /* Apply font smoothing globally if desired */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* --- Base Container --- */
+.student-management-container {
+    background-color: var(--container-bg);
+    border: 1px solid var(--container-border-color);
+    border-radius: var(--base-border-radius);
+    box-shadow: var(--container-shadow);
+    padding: var(--container-padding);
+    margin: 50px auto; /* Increased margin */
+    max-width: 1024px; /* Slightly wider max */
+    font-family: var(--primary-font);
+    position: relative;
+    color: var(--text-color-primary); /* Set base text color */
+}
+
+/* --- Enhanced Back Link/Button --- */
+.back-link-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px; /* Slightly reduced gap */
+    position: absolute;
+    top: calc(var(--container-padding) - 8px); /* Adjust position slightly */
+    left: var(--container-padding);
+    z-index: 10;
+    padding: 8px 14px; /* Adjusted padding */
+    background-color: var(--container-bg); /* Match container */
+    border: 1px solid var(--container-border-color);
+    color: var(--text-color-secondary);
+    font-size: 0.875rem; /* Slightly smaller */
+    font-weight: 500;
+    border-radius: var(--button-border-radius);
+    text-decoration: none;
+    transition: background-color var(--transition-speed) var(--transition-ease),
+                color var(--transition-speed) var(--transition-ease),
+                border-color var(--transition-speed) var(--transition-ease),
+                box-shadow var(--transition-speed) var(--transition-ease);
+}
+.back-link-button svg {
+    width: 14px;
+    height: 14px;
+    opacity: 0.7;
+}
+.back-link-button:hover,
+.back-link-button:focus-visible { /* Combine hover and focus-visible */
+    background-color: var(--table-header-bg);
+    color: var(--info-color);
+    border-color: rgba(10, 132, 255, 0.3); /* Lighter blue border on hover/focus */
+    text-decoration: none;
+    box-shadow: 0 0 0 3px var(--focus-ring-color); /* Use focus ring on hover too */
+    outline: none;
+}
+.back-link-button:active {
+    background-color: var(--table-border-color);
+    box-shadow: none;
+    transform: translateY(1px);
+    transition-duration: 0.05s; /* Faster active transition */
+}
+
+/* --- Heading --- */
+.student-management-container h2 {
+    color: var(--header-color);
+    font-size: 1.75rem; /* Slightly reduced */
+    font-weight: 600;
+    margin-top: 0;
+    margin-bottom: 40px; /* Keep generous margin */
+    text-align: center;
+    letter-spacing: -0.02em; /* Subtle tightening */
+    padding-top: 15px; /* Ensure space above if back button present */
+}
+.student-management-container h2.no-back-button {
+   padding-top: 0;
+}
+
+
+/* --- Status Sections --- */
+.status-section {
+    margin-bottom: 40px;
+    padding: 24px var(--container-padding); /* Use container padding horizontally */
+    background-color: #ffffff; /* Keep white */
+    border: 1px solid var(--container-border-color);
+    border-radius: var(--base-border-radius);
+    /* Remove shadow from individual sections for cleaner look */
+    /* box-shadow: var(--shadow-sm); */
+}
+.status-section:last-child {
+    margin-bottom: 20px;
+}
+
+.status-section h3 {
+    font-size: 1.25rem; /* Adjusted size */
+    color: var(--header-color);
+    margin-top: 0;
+    margin-bottom: 20px;
+    padding-bottom: 12px; /* Reduced padding */
+    border-bottom: 1px solid var(--table-border-color);
+    display: flex;
+    align-items: center;
+    font-weight: 500; /* Keep medium weight */
+}
+.status-section h3 svg {
+    margin-right: 10px; /* Reduced icon margin */
+    font-size: 1.2em; /* Adjust icon size relative to text */
+    opacity: 0.85;
+}
+.status-section h3 .icon-success { color: var(--success-color); }
+.status-section h3 .icon-danger { color: var(--danger-color); }
+
+/* Empty state message styling */
+.status-section p:not([class]) {
+   color: var(--text-color-secondary);
+   font-style: italic;
+   text-align: center;
+   padding: 30px 0; /* More padding */
+   font-size: 0.95rem;
+}
+
+/* --- Table Styling (Pending Section) --- */
+.student-management-container table {
+    width: 100%;
+    border-collapse: separate; /* Use separate for spacing/border-radius */
+    border-spacing: 0; /* Remove default spacing */
+    /* Add subtle border to table container if needed */
+    /* border: 1px solid var(--table-border-color); */
+    /* border-radius: var(--button-border-radius); */
+}
+
+.student-management-container th,
+.student-management-container td {
+    padding: 15px var(--base-padding); /* Consistent padding */
+    text-align: left;
+    border-bottom: 1px solid var(--table-border-color);
+    vertical-align: middle;
+    color: var(--text-color-primary);
+    font-size: 0.9rem; /* Slightly smaller base size */
+    line-height: 1.5; /* Ensure good line height */
+}
+.student-management-container tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.student-management-container th {
+    background-color: var(--table-header-bg);
+    color: var(--table-header-color);
+    font-weight: 500; /* Medium weight header */
+    text-transform: none; /* Remove uppercase for softer look */
+    font-size: 0.8rem; /* Smaller header text */
+    letter-spacing: normal; /* Remove letter spacing */
+}
+/* Apply border radius to corners */
+.student-management-container thead th:first-child { border-top-left-radius: var(--button-border-radius); }
+.student-management-container thead th:last-child { border-top-right-radius: var(--button-border-radius); }
+/* tbody tr:last-child td:first-child { border-bottom-left-radius: var(--button-border-radius); } */
+/* tbody tr:last-child td:last-child { border-bottom-right-radius: var(--button-border-radius); } */
+
+
+.student-management-container tbody tr {
+    transition: background-color var(--transition-speed) var(--transition-ease);
+}
+.student-management-container tbody tr:hover {
+    background-color: var(--table-row-hover-bg);
+}
+
+/* --- Action Checkboxes --- */
+.action-checkboxes {
+    display: flex;
+    align-items: center;
+    gap: 24px; /* Adjusted spacing */
+    flex-wrap: wrap;
+}
+
+.action-checkboxes label {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: 0.875rem; /* Standardized */
+    color: var(--text-color-secondary);
+    gap: 6px; /* Adjusted gap */
+    transition: color var(--transition-speed) var(--transition-ease);
+    padding: 4px 0; /* Add vertical padding for easier clicking */
+}
+.action-checkboxes label:hover,
+.action-checkboxes label:focus-within {
+    color: var(--text-color-primary);
+}
+
+.action-checkboxes input[type="checkbox"] {
+    cursor: pointer;
+    width: 16px; /* Adjusted */
+    height: 16px;
+    accent-color: var(--checkbox-accent-color);
+    vertical-align: middle; /* Re-ensure alignment */
+    margin-right: 2px; /* Ensure slight space if gap doesn't cover */
+    border-radius: 4px; /* Softer radius */
+    transition: box-shadow var(--transition-speed) var(--transition-ease);
+    border: 1px solid var(--container-border-color); /* Add subtle border */
+    appearance: none; /* Allows custom styling */
+    background-color: var(--container-bg);
+    position: relative;
+}
+.action-checkboxes input[type="checkbox"]:checked {
+    background-color: var(--info-color);
+    border-color: var(--info-color);
+}
+/* Custom checkmark */
+.action-checkboxes input[type="checkbox"]:checked::before {
+    content: '✔';
+    position: absolute;
+    top: 0px;
+    left: 2px;
+    color: white;
+    font-size: 12px;
+    line-height: 1;
+}
+.action-checkboxes input[type="checkbox"]:focus-visible {
+    outline: 2px solid transparent;
+    box-shadow: 0 0 0 3px var(--focus-ring-color);
+}
+
+/* --- Error State within Pending Row --- */
+.action-error-state {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    color: var(--danger-color);
+    font-size: 0.875rem;
+    padding: 6px 0;
+}
+.action-error-state > .icon-error {
+    font-size: 1.2em;
+    flex-shrink: 0;
+}
+.action-error-state > span { /* "Retry:" text */
+    font-weight: 500;
+    flex-shrink: 0;
+    margin-right: 3px;
+}
+.retry-checkboxes {
+    display: inline-flex;
+    gap: 18px;
+    padding-left: 0;
+    margin-left: 0;
+}
+.retry-checkboxes label {
+    color: var(--danger-color);
+}
+.retry-checkboxes label:hover {
+     color: var(--danger-color-dark);
+}
+
+/* --- Status Icons & Spinners --- */
+.icon-spinner {
+    color: var(--spinner-color);
+    animation: spin 1.2s linear infinite; /* Slightly faster spin */
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 1.1em; /* Adjust size */
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+.icon-error { color: var(--danger-color); vertical-align: middle; font-size: 1.1em;}
+.icon-success { color: var(--success-color); vertical-align: middle; font-size: 1.1em;}
+
+
+/* --- Paid/Suspended Display Lists --- */
+.student-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.student-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0; /* Vertical padding only */
+    border-bottom: 1px solid var(--table-border-color); /* Use lightest border */
+    color: var(--text-color-secondary);
+    font-size: 0.9rem;
+    flex-wrap: wrap;
+    gap: 10px 15px;
+    transition: background-color var(--transition-speed) var(--transition-ease);
+    border-radius: 4px; /* Subtle radius on hover */
+    margin: 2px 0; /* Add tiny margin for hover separation */
+}
+.student-list li:hover {
+     background-color: var(--table-row-hover-bg);
+     /* Add padding on hover to contain background */
+     /* padding-left: 8px; */
+     /* padding-right: 8px; */
+}
+.student-list li:last-child {
+    border-bottom: none;
+}
+
+.student-list li .student-name-link {
+     flex-grow: 1;
+     color: var(--text-color-primary);
+     font-weight: 400; /* Normal weight */
+     text-decoration: none;
+     transition: color var(--transition-speed) var(--transition-ease);
+     outline: none; /* Remove default outline */
+}
+.student-list li .student-name-link:hover,
+.student-list li .student-name-link:focus-visible { /* Combine hover/focus */
+    color: var(--info-color);
+    text-decoration: underline;
+    text-decoration-thickness: 1px; /* Subtle underline */
+    text-underline-offset: 3px;
+}
+
+.student-list .payment-method {
+    font-size: 0.8rem; /* Smaller */
+    color: var(--text-color-secondary);
+    font-style: normal; /* Remove italic */
+    background-color: var(--table-header-bg); /* Subtle background chip */
+    padding: 3px 8px;
+    border-radius: 10px; /* Pill shape */
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-left: 5px;
+}
+.student-list .list-icon {
+    margin-left: auto;
+    padding-left: 10px;
+    font-size: 1em;
+    order: 3;
+    flex-shrink: 0;
+}
+
+
+/* --- Global Loading/Error States --- */
+.loading-state, .error-state {
+    display: flex;
+    flex-direction: column; /* Stack icon and text */
+    align-items: center;
+    justify-content: center;
+    padding: 50px 20px; /* Increased padding */
+    margin: 40px 0;
+    font-size: 1rem; /* Adjusted size */
+    color: var(--text-color-secondary);
+    gap: 15px; /* Increased gap */
+    border-radius: var(--base-border-radius);
+    text-align: center;
+    background-color: var(--table-header-bg); /* Light background */
+    border: 1px dashed var(--container-border-color); /* Dashed border */
+}
+.error-state {
+    color: var(--danger-color-dark);
+    background-color: #fef1f2; /* Very light red */
+    border-color: var(--danger-color);
+}
+.loading-state .icon-spinner {
+    font-size: 1.8em; /* Larger spinner */
+}
+.error-state .icon-error,
+.error-state svg {
+    font-size: 1.8em; /* Larger icon */
+    color: var(--danger-color);
+}
+
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 768px) {
+    .student-management-container {
+        padding: 20px; /* Reduced padding */
+        margin: 25px 15px;
+    }
+    .back-link-button {
+        position: relative;
+        top: auto;
+        left: auto;
+        margin-bottom: 20px;
+    }
+    .student-management-container h2 {
+        font-size: 1.5rem;
+        margin-bottom: 30px;
+        padding-top: 0;
+    }
+    .status-section { padding: 20px; margin-bottom: 30px;}
+    .status-section h3 { font-size: 1.15rem; margin-bottom: 15px; padding-bottom: 10px; }
+    .student-management-container th, .student-management-container td { padding: 12px; font-size: 0.875rem;}
+    .action-checkboxes { gap: 15px; }
+    .action-error-state { flex-direction: column; align-items: flex-start; gap: 8px;}
+    .retry-checkboxes { margin-left: 0; padding-left: 0; border-left: none;}
+    .student-list li { padding: 10px 0;} /* Adjust list padding */
+}
+
+@media (max-width: 480px) {
+     .student-management-container h2 { font-size: 1.3rem; }
+     .status-section h3 { font-size: 1.05rem;}
+
+     /* Responsive Table Stack */
+     .student-management-container table thead { display: none; }
+     .student-management-container table tr {
+         display: block;
+         margin-bottom: 1rem;
+         border: 1px solid var(--container-border-color);
+         border-radius: var(--button-border-radius);
+         overflow: hidden;
+         background-color: var(--container-bg); /* Ensure background */
+         box-shadow: var(--shadow-sm);
+     }
+     .student-management-container table td {
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+         width: 100%;
+         text-align: right;
+         padding: 12px var(--base-padding); /* Use base padding */
+         border-bottom: 1px solid var(--table-border-color);
+         min-height: 48px; /* Ensure good tap height */
+     }
+     .student-management-container table tr td:last-child { border-bottom: none; }
+
+     .student-management-container table td::before {
+        content: attr(data-label);
+        font-weight: 500; /* Medium weight label */
+        color: var(--text-color-secondary); /* Secondary color label */
+        font-size: 0.75rem; /* Smaller label */
+        text-transform: uppercase; /* Keep uppercase for distinction */
+        text-align: left;
+        padding-right: 15px; /* More space */
+        flex-shrink: 0;
+     }
+     /* --- Adjust checkbox layout in stacked table view --- */
+     .student-management-container table td[data-label="Actions"] {
+         /* Allow content to wrap naturally */
+         /* Override label positioning slightly if needed */
+     }
+     .student-management-container table td[data-label="Actions"] .action-checkboxes {
+         flex-direction: row; /* Keep row layout */
+         flex-wrap: wrap; /* Allow wrapping */
+         justify-content: flex-end; /* Align checkboxes right */
+         gap: 10px 15px; /* Row and column gap */
+         width: auto; /* Don't force full width */
+         margin-top: 0;
+         margin-left: auto; /* Push to right if space allows */
+     }
+     .student-management-container table td[data-label="Actions"]::before {
+         align-self: center; /* Center 'Actions' label vertically */
+     }
+     /* --- Stack error state items properly --- */
+     .action-error-state {
+         width: 100%; /* Take full width below label */
+         justify-content: flex-end; /* Align right */
+         padding-top: 5px;
+     }
+     .retry-checkboxes { gap: 10px; flex-direction: row; /* Keep row */ align-items: center; }
+}

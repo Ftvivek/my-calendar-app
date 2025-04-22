@@ -1,0 +1,27 @@
+# Dockerfile.frontend (Place this in the ROOT directory: MY-CALENDAR-APP/)
+
+# Stage 1: Build the React application (assuming build process is standard)
+# Use the Node version matching your project
+FROM node:18-alpine AS builder
+WORKDIR /app
+# Copy frontend package files from the root
+COPY package*.json ./
+# Install ALL dependencies (including devDependencies needed for build)
+RUN npm install
+# Copy the rest of the frontend source code (src, public, etc.)
+COPY . .
+# Run the build command defined in your root package.json
+RUN npm run build
+
+# Stage 2: Serve the built application using Nginx
+FROM nginx:stable-alpine
+# Copy the built files from the 'builder' stage's build output directory
+# The source path /app/build should match the output of 'npm run build'
+COPY --from=builder /app/build /usr/share/nginx/html
+# Nginx listens on port 80 by default
+EXPOSE 80
+# Optional: If you need custom Nginx config (e.g., for routing API calls),
+# you would copy a custom nginx.conf file here.
+# COPY nginx.conf /etc/nginx/conf.d/default.conf
+# When the container starts, run Nginx in the foreground
+CMD ["nginx", "-g", "daemon off;"]

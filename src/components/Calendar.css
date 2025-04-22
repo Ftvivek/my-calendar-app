@@ -1,0 +1,754 @@
+/* --- Calendar.css (Enhanced Premium & Aesthetic Focus) --- */
+
+/* Import Google Font (Ensure it's linked in index.html too) */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap'); /* Removed 800 weight for subtlety */
+
+/* --- Base Variables (Refined for Premium Feel) --- */
+:root {
+    /* Core Palette (Slightly adjusted grays/subtlety) */
+    --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    --color-primary: #5A57FF; /* Slightly softer primary */
+    --color-primary-dark: #4340E8; /* Adjusted dark */
+    --color-primary-light: rgba(90, 87, 255, 0.12); /* Slightly more visible light */
+    --color-primary-ultralight: rgba(90, 87, 255, 0.06); /* Adjusted ultralight */
+    --color-success: #28C76F; /* Slightly different green */
+    --color-success-dark: #21A75B; /* Adjusted success dark */
+    --color-text-primary: #161618; /* Darker, richer black */
+    --color-text-secondary: #6E6D7A; /* Softer secondary text */
+    --color-text-tertiary: #A09FA6; /* Softer tertiary text */
+    --color-text-on-primary: #ffffff;
+    --color-text-on-success: #ffffff;
+    --color-bg-light: #F9F9FB; /* Slightly warmer light background */
+    --color-bg-white: #ffffff;
+    --color-bg-subtle-hover: #F5F5F7; /* Subtle hover background */
+    --color-border: #EAEAEB; /* Softer border color */
+    --color-border-light: #F1F1F3; /* Softer light border */
+    --color-accent-red: #FF453A; /* Slightly adjusted red */
+    --color-primary-rgb: 90, 87, 255; /* Updated RGB */
+    --color-success-rgb: 40, 199, 111; /* Added Success RGB */
+
+    /* Sizing & Spacing (Maintained generous touch targets) */
+    --spacing-unit: 8px;
+    --spacing-xs: calc(var(--spacing-unit) * 0.5);   /* 4px */
+    --spacing-sm: var(--spacing-unit);             /* 8px */
+    --spacing-md: calc(var(--spacing-unit) * 1.5);   /* 12px */
+    --spacing-lg: calc(var(--spacing-unit) * 2);     /* 16px */
+    --spacing-xl: calc(var(--spacing-unit) * 2.5);   /* 20px */
+    --spacing-xxl: calc(var(--spacing-unit) * 3.5);  /* 28px */
+
+    /* Appearance (Refined Radii and Shadows) */
+    --border-radius-small: 6px;  /* Slightly smaller for tighter UI elements */
+    --border-radius-medium: 10px; /* Main radius */
+    --border-radius-large: 14px; /* Container radius */
+    --border-radius-xlarge: 18px;
+    --border-radius-circle: 50%;
+    --shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.04); /* Very light shadow */
+    --shadow-soft: 0 3px 8px rgba(80, 80, 100, 0.07); /* Softer primary shadow */
+    --shadow-medium: 0 5px 15px rgba(80, 80, 100, 0.1); /* Lifted shadow */
+    --shadow-large: 0 8px 25px rgba(80, 80, 100, 0.12); /* More pronounced shadow */
+    --shadow-interactive: 0 2px 6px rgba(var(--color-primary-rgb), 0.15); /* Refined interactive shadow */
+    --shadow-interactive-hover: 0 4px 10px rgba(var(--color-primary-rgb), 0.2); /* Hover shadow */
+    --shadow-success: 0 2px 6px rgba(var(--color-success-rgb), 0.2);
+    --shadow-success-hover: 0 4px 10px rgba(var(--color-success-rgb), 0.25);
+
+
+    /* Transitions (Smoother Easing) */
+    --transition-duration-short: 0.18s; /* Slightly longer for smoother feel */
+    --transition-duration-medium: 0.28s;
+    --transition-easing-default: cubic-bezier(0.4, 0, 0.2, 1); /* Material Design standard easing */
+    /* Removed bounce easing for a more professional feel */
+}
+
+/* --- Reset & Base Styles --- */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+    font-size: 16px;
+}
+
+body {
+    font-family: var(--font-primary);
+    background-color: var(--color-bg-light);
+    color: var(--color-text-primary);
+    line-height: 1.55; /* Slightly increased line-height for readability */
+}
+
+button {
+    font-family: inherit;
+    cursor: pointer;
+    border: none;
+    background: none;
+    padding: 0;
+    color: inherit; /* Ensure buttons inherit color by default */
+}
+
+/* --- Focus Visible Styling (More Subtle) --- */
+*:focus-visible {
+    outline: 2px solid var(--color-primary-light);
+    outline-offset: 2px;
+    border-radius: var(--border-radius-small); /* Match focus outline to element radius where possible */
+}
+/* Remove default outline when focus-visible is supported */
+*:focus:not(:focus-visible) {
+    outline: none;
+}
+
+/* --- Calendar Container --- */
+.calendar-page-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: var(--spacing-lg); /* Consistent padding */
+    background-color: var(--color-bg-light);
+    min-height: 100vh;
+}
+
+.calendar-container {
+    width: 100%;
+    max-width: 420px; /* Slightly increased max-width */
+    margin: var(--spacing-lg) 0; /* Adjusted vertical margin */
+    border-radius: var(--border-radius-large); /* Consistent large radius */
+    overflow: hidden;
+    font-family: var(--font-primary);
+    box-shadow: var(--shadow-medium); /* Elevated shadow */
+    background-color: var(--color-bg-white);
+    transition: box-shadow var(--transition-duration-medium) var(--transition-easing-default);
+    display: flex;
+    flex-direction: column;
+    position: relative; /* Needed for potential absolute positioning inside */
+}
+
+/* --- Calendar Header --- */
+.calendar-header {
+    /* Refined gradient for a premium look */
+    background: linear-gradient(130deg, var(--color-primary), var(--color-primary-dark));
+    color: var(--color-text-on-primary);
+    padding: var(--spacing-lg) var(--spacing-xl); /* Generous padding */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: none; /* Removed border, relying on shadow/color change */
+}
+
+.calendar-header button {
+    padding: var(--spacing-sm);
+    background: transparent;
+    font-size: 1.5em; /* Larger icons */
+    color: rgba(255, 255, 255, 0.8); /* Slightly less contrast */
+    transition: background-color var(--transition-duration-short) var(--transition-easing-default),
+                color var(--transition-duration-short) var(--transition-easing-default),
+                transform var(--transition-duration-short) var(--transition-easing-default);
+    line-height: 1;
+    border-radius: var(--border-radius-circle);
+    min-width: 44px; /* Increased touch target */
+    height: 44px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.calendar-header button:hover,
+.calendar-header button:focus-visible {
+    color: var(--color-text-on-primary);
+    background-color: rgba(255, 255, 255, 0.1); /* Subtle hover background */
+    transform: scale(1.05); /* Gentle scale on hover */
+}
+.calendar-header button:active {
+    transform: scale(0.97); /* Slightly refined active scale */
+    background-color: rgba(255, 255, 255, 0.15);
+}
+/* Override focus-visible outline color for header buttons */
+.calendar-header button:focus-visible {
+     outline-color: rgba(255, 255, 255, 0.5);
+}
+
+.calendar-header h2 {
+    margin: 0 var(--spacing-md); /* Adjusted margin */
+    font-size: 1.25em; /* Slightly larger title */
+    font-weight: 600;
+    text-align: center;
+    flex-grow: 1;
+    letter-spacing: 0.2px;
+}
+
+/* --- Controls (Today Button, View Collection) --- */
+.calendar-controls {
+    padding: var(--spacing-md) var(--spacing-lg);
+    display: flex; /* Use flexbox for better alignment */
+    justify-content: center; /* Center items */
+    gap: var(--spacing-md); /* Space between buttons */
+    background-color: var(--color-bg-white);
+    border-bottom: 1px solid var(--color-border-light);
+}
+
+/* Style all buttons within controls similarly */
+.calendar-controls button {
+    padding: var(--spacing-sm) var(--spacing-lg);
+    border-radius: var(--border-radius-medium); /* Consistent radius */
+    background-color: var(--color-primary-ultralight); /* Use ultra-light as base */
+    color: var(--color-primary); /* Primary color text */
+    font-size: 0.875em; /* Adjusted font size */
+    font-weight: 500;
+    transition: background-color var(--transition-duration-short) var(--transition-easing-default),
+                color var(--transition-duration-short) var(--transition-easing-default),
+                transform var(--transition-duration-short) var(--transition-easing-default),
+                box-shadow var(--transition-duration-short) var(--transition-easing-default);
+    border: 1px solid var(--color-border); /* Subtle border */
+}
+
+.calendar-controls button:hover,
+.calendar-controls button:focus-visible {
+    background-color: var(--color-primary-light); /* Darker on hover */
+    color: var(--color-primary-dark);
+    transform: translateY(-2px); /* Slightly more lift */
+    box-shadow: var(--shadow-interactive); /* Add subtle shadow on hover */
+    border-color: var(--color-primary-light);
+}
+.calendar-controls button:active {
+    transform: scale(0.98) translateY(0);
+    background-color: var(--color-primary-light);
+    box-shadow: none;
+}
+
+/* --- Grid Layout --- */
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    background: var(--color-bg-white);
+    padding: var(--spacing-sm) var(--spacing-md); /* Adjusted padding */
+    gap: var(--spacing-sm); /* Consistent gap */
+}
+
+/* --- Day Names --- */
+.calendar-day-name {
+    padding: var(--spacing-xs) 0;
+    text-align: center;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    font-size: 0.7em; /* Slightly larger */
+    text-transform: uppercase;
+    letter-spacing: 0.6px; /* Slightly more spacing */
+}
+
+/* --- Days --- */
+.calendar-day {
+    padding: 0;
+    aspect-ratio: 1 / 1;
+    text-align: center;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--color-text-primary);
+    font-size: 0.9em; /* Consistent font size */
+    font-weight: 400;
+    border-radius: var(--border-radius-circle); /* Circular days */
+    transition: background-color var(--transition-duration-short) var(--transition-easing-default),
+                color var(--transition-duration-short) var(--transition-easing-default),
+                transform var(--transition-duration-short) var(--transition-easing-default),
+                box-shadow var(--transition-duration-short) var(--transition-easing-default);
+    cursor: pointer;
+    position: relative;
+    border: 2px solid transparent; /* Reserve space for border */
+}
+
+/* Day Hover/Focus State (Subtle) */
+.calendar-day:not(.empty):not(.selected):not(.today):hover,
+.calendar-day:not(.empty):not(.selected):not(.today):focus-visible {
+    background-color: var(--color-primary-ultralight);
+    color: var(--color-primary-dark);
+    /* Removed transform scale for less jumpiness */
+}
+
+/* Day Active State */
+.calendar-day:not(.empty):active {
+    transform: scale(0.96); /* Slightly deeper press */
+    background-color: var(--color-primary-light);
+}
+
+/* Selected Day (Outline Style) */
+.calendar-day.selected {
+    /* Use border instead of background for selection indicator */
+    border-color: var(--color-primary);
+    color: var(--color-primary-dark);
+    font-weight: 600;
+    background-color: var(--color-primary-ultralight); /* Light background for selection */
+    /* Removed box-shadow for cleaner look */
+}
+.calendar-day.selected:hover,
+.calendar-day.selected:focus-visible {
+    background-color: var(--color-primary-light); /* Slightly darker on hover */
+}
+
+/* Empty Days */
+.calendar-day.empty {
+    background: transparent;
+    cursor: default;
+    pointer-events: none;
+    color: transparent;
+    border-color: transparent;
+}
+.calendar-day.empty:hover,
+.calendar-day.empty:active {
+    background: transparent;
+    transform: none;
+}
+
+/* Today Highlight (Filled Style) */
+.calendar-day.today {
+    background-color: var(--color-primary);
+    color: var(--color-text-on-primary);
+    font-weight: 600;
+    border-color: var(--color-primary); /* Match border to background */
+    /* Removed box-shadow for flat design */
+}
+.calendar-day.today:hover,
+.calendar-day.today:focus-visible {
+    background-color: var(--color-primary-dark);
+    border-color: var(--color-primary-dark);
+    color: var(--color-text-on-primary);
+    transform: scale(1.03); /* Slight pop on hover */
+}
+/* If Today is also Selected - Combine styles */
+.calendar-day.today.selected {
+    background-color: var(--color-primary);
+    color: var(--color-text-on-primary);
+    border: 2px solid rgba(255, 255, 255, 0.6); /* White border to indicate selection on top of today */
+    font-weight: 600;
+    box-shadow: none; /* Ensure no competing shadows */
+}
+.calendar-day.today.selected:hover,
+.calendar-day.today.selected:focus-visible {
+     background-color: var(--color-primary-dark);
+     border-color: rgba(255, 255, 255, 0.7);
+}
+
+/* --- Sections Below Calendar --- */
+.add-student-section,
+.all-students-section {
+    padding: var(--spacing-lg);
+    background-color: var(--color-bg-white);
+    text-align: center;
+    border-top: 1px solid var(--color-border-light);
+}
+
+/* Common Button Base for Sections - inherits focus-visible */
+.section-button {
+    display: inline-flex; /* Use inline-flex for alignment */
+    justify-content: center;
+    align-items: center;
+    width: 100%; /* Full width by default */
+    max-width: 300px; /* Set a max-width */
+    margin: 0 auto; /* Center the button if max-width applies */
+    padding: var(--spacing-md) var(--spacing-xl); /* Generous padding */
+    border-radius: var(--border-radius-medium);
+    font-size: 0.95em;
+    font-weight: 600; /* Bold weight for action buttons */
+    cursor: pointer;
+    transition: background-color var(--transition-duration-short) var(--transition-easing-default),
+                color var(--transition-duration-short) var(--transition-easing-default),
+                transform var(--transition-duration-short) var(--transition-easing-default),
+                box-shadow var(--transition-duration-short) var(--transition-easing-default);
+    line-height: 1.3;
+    text-align: center;
+}
+
+.section-button:active {
+    transform: scale(0.98); /* Consistent active scale */
+    box-shadow: none;
+}
+.section-button:hover,
+.section-button:focus-visible {
+    transform: translateY(-2px); /* Consistent hover lift */
+}
+
+/* --- Specific Button Styles --- */
+
+/* Primary (Add Student) Button - Use Success color */
+/* --- Common Button Base for Sections --- */
+/* Remove this rule entirely OR keep it for reference, but don't rely on 'composes' */
+/*
+.section-button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+    padding: var(--spacing-md) var(--spacing-xl);
+    border-radius: var(--border-radius-medium);
+    font-size: 0.95em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color var(--transition-duration-short) var(--transition-easing-default),
+                color var(--transition-duration-short) var(--transition-easing-default),
+                transform var(--transition-duration-short) var(--transition-easing-default),
+                box-shadow var(--transition-duration-short) var(--transition-easing-default);
+    line-height: 1.3;
+    text-align: center;
+}
+
+.section-button:active {
+    transform: scale(0.98);
+    box-shadow: none;
+}
+.section-button:hover,
+.section-button:focus-visible {
+    transform: translateY(-2px);
+}
+*/
+
+/* --- Specific Button Styles (Copying base styles) --- */
+
+/* Primary (Add Student) Button - Use Success color */
+.add-student-section button {
+    /* Copied styles from .section-button */
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+    padding: var(--spacing-md) var(--spacing-xl);
+    border-radius: var(--border-radius-medium);
+    font-size: 0.95em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color var(--transition-duration-short) var(--transition-easing-default),
+                color var(--transition-duration-short) var(--transition-easing-default),
+                transform var(--transition-duration-short) var(--transition-easing-default),
+                box-shadow var(--transition-duration-short) var(--transition-easing-default);
+    line-height: 1.3;
+    text-align: center;
+    /* Specific styles */
+    background-color: var(--color-success);
+    color: var(--color-text-on-success);
+    box-shadow: var(--shadow-success);
+    border: none; /* Ensure no default border interferes */
+}
+.add-student-section button:hover,
+.add-student-section button:focus-visible {
+    transform: translateY(-2px); /* Keep hover effect */
+    background-color: var(--color-success-dark);
+    box-shadow: var(--shadow-success-hover);
+}
+.add-student-section button:active {
+    transform: scale(0.98); /* Keep active effect */
+    box-shadow: none;
+}
+/* Override focus-visible for success button */
+.add-student-section button:focus-visible {
+    outline-color: rgba(var(--color-success-rgb), 0.3);
+}
+
+/* Secondary (View All Students) Button - Outline style */
+.all-students-section button {
+     /* Copied styles from .section-button */
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+    padding: var(--spacing-md) var(--spacing-xl);
+    border-radius: var(--border-radius-medium);
+    font-size: 0.95em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color var(--transition-duration-short) var(--transition-easing-default),
+                color var(--transition-duration-short) var(--transition-easing-default),
+                transform var(--transition-duration-short) var(--transition-easing-default),
+                box-shadow var(--transition-duration-short) var(--transition-easing-default),
+                border-color var(--transition-duration-short) var(--transition-easing-default); /* Added border-color transition */
+    line-height: 1.3;
+    text-align: center;
+    /* Specific styles */
+    background-color: var(--color-bg-white);
+    color: var(--color-primary);
+    border: 1px solid var(--color-border);
+    box-shadow: var(--shadow-subtle);
+}
+.all-students-section button:hover,
+.all-students-section button:focus-visible {
+    transform: translateY(-2px); /* Keep hover effect */
+    background-color: var(--color-primary-ultralight);
+    border-color: var(--color-primary-light);
+    color: var(--color-primary-dark);
+    box-shadow: var(--shadow-interactive);
+}
+.all-students-section button:active {
+     transform: scale(0.98); /* Keep active effect */
+     box-shadow: none;
+     background-color: var(--color-primary-light); /* Add active background */
+}
+/* Standard focus visible for secondary */
+.all-students-section button:focus-visible {
+     outline-color: var(--color-primary-light);
+}
+
+/* --- Blur Effect (Refined) --- */
+.calendar-content-blurred {
+    filter: blur(5px); /* Slightly softer blur */
+    pointer-events: none;
+    user-select: none;
+    transition: filter var(--transition-duration-medium) var(--transition-easing-default);
+    /* Ensure the blurred content doesn't shift layout drastically */
+    opacity: 0.8; /* Slightly fade out blurred content */
+}
+
+/* No need for separate blur-overlay if the main overlay handles background */
+
+/* --- Money Collected Section on Calendar Page --- */
+.money-collected-container-on-calendar {
+    margin: var(--spacing-xl) 0; /* Increased margin */
+    border: none; /* Remove border, rely on shadow */
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius-large); /* Match calendar */
+    background-color: var(--color-bg-white);
+    width: 100%;
+    max-width: 420px; /* Match calendar width */
+    box-shadow: var(--shadow-soft); /* Consistent soft shadow */
+}
+
+.money-collected-container-on-calendar h3 {
+    font-size: 1.15em; /* Slightly larger */
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin-bottom: var(--spacing-lg); /* More space below title */
+    text-align: center;
+}
+
+.money-collected-container-on-calendar .collection-section {
+    margin-bottom: var(--spacing-lg);
+    text-align: center;
+}
+/* Remove last margin */
+.money-collected-container-on-calendar .collection-section:last-child {
+    margin-bottom: 0;
+}
+
+.money-collected-container-on-calendar .collection-section h4 {
+    font-size: 0.9em;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    margin-bottom: var(--spacing-xs);
+    text-transform: uppercase; /* Uppercase for label */
+    letter-spacing: 0.5px;
+}
+
+.money-collected-container-on-calendar .collection-section p {
+    font-size: 1.25em; /* Larger amount */
+    font-weight: 600;
+    color: var(--color-success); /* Use success color */
+    margin: 0;
+}
+
+/* --- Search Bar (Refined Styling) --- */
+.search-bar-container {
+    padding: var(--spacing-md) var(--spacing-lg); /* Adjusted padding */
+    background-color: var(--color-bg-white);
+    border-bottom: 1px solid var(--color-border-light);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm); /* Add gap */
+}
+
+.search-input {
+    flex-grow: 1;
+    padding: var(--spacing-sm) var(--spacing-md); /* Better padding */
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-medium);
+    font-size: 0.95em; /* Slightly larger */
+    color: var(--color-text-primary);
+    background-color: var(--color-bg-light); /* Subtle background */
+    transition: border-color var(--transition-duration-short) var(--transition-easing-default),
+                box-shadow var(--transition-duration-short) var(--transition-easing-default);
+}
+.search-input:focus,
+.search-input:focus-visible {
+    border-color: var(--color-primary);
+    background-color: var(--color-bg-white);
+    box-shadow: 0 0 0 2px var(--color-primary-light); /* Focus ring effect */
+    outline: none; /* Override default focus */
+}
+
+.search-button, .clear-search-button {
+    background: none;
+    border: none;
+    padding: var(--spacing-sm);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    font-size: 1.2em; /* Slightly larger icons */
+    border-radius: var(--border-radius-circle);
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color var(--transition-duration-short) var(--transition-easing-default),
+                background-color var(--transition-duration-short) var(--transition-easing-default);
+}
+.search-button:hover, .clear-search-button:hover,
+.search-button:focus-visible, .clear-search-button:focus-visible {
+    color: var(--color-primary);
+    background-color: var(--color-primary-ultralight);
+}
+.search-button:active, .clear-search-button:active {
+    color: var(--color-primary-dark);
+    background-color: var(--color-primary-light);
+}
+
+/* --- Search Overlay & Results (Premium Polish) --- */
+.search-overlay {
+    position: fixed;
+    inset: 0; /* Covers entire viewport */
+    background-color: rgba(26, 26, 28, 0.6); /* Darker, richer overlay using text primary base */
+    backdrop-filter: blur(4px); /* Add backdrop blur for modern feel */
+    -webkit-backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: var(--spacing-lg); /* Padding around the results modal */
+    z-index: 1000;
+    opacity: 0; /* Start hidden for animation */
+    visibility: hidden;
+    transition: opacity var(--transition-duration-medium) var(--transition-easing-default),
+                visibility var(--transition-duration-medium) var(--transition-easing-default);
+}
+/* Add class when overlay is visible for animation */
+.search-overlay.visible {
+    opacity: 1;
+    visibility: visible;
+}
+/* Animate results pop-in */
+.search-overlay.visible .search-results-overlay {
+     transform: scale(1) translateY(0);
+     opacity: 1;
+}
+
+.search-results-overlay {
+    background-color: var(--color-bg-white);
+    border-radius: var(--border-radius-large);
+    padding: var(--spacing-xl); /* More padding */
+    width: 100%;
+    max-width: 450px; /* Control max width */
+    max-height: 85vh; /* Control max height */
+    overflow-y: auto;
+    box-shadow: var(--shadow-large); /* Prominent shadow for modal */
+    transform: scale(0.95) translateY(10px); /* Starting state for animation */
+    opacity: 0; /* Start hidden for animation */
+    transition: transform var(--transition-duration-medium) var(--transition-easing-default),
+                opacity var(--transition-duration-medium) var(--transition-easing-default);
+    transition-delay: 0.05s; /* Slight delay */
+}
+
+.student-detail-overlay {
+    margin-bottom: var(--spacing-md);
+    padding-bottom: var(--spacing-md);
+    border-bottom: 1px solid var(--color-border-light);
+}
+.student-detail-overlay:last-child {
+    border-bottom: none;
+    margin-bottom: 0; /* Remove margin on last item */
+    padding-bottom: 0;
+}
+
+.search-results-overlay h3 {
+    font-size: 1.2em;
+    font-weight: 600;
+    margin-bottom: var(--spacing-lg); /* More space */
+    color: var(--color-text-primary);
+}
+
+.search-results-overlay p {
+    font-size: 0.95em;
+    color: var(--color-text-secondary);
+    margin-bottom: var(--spacing-xs);
+    line-height: 1.4;
+}
+.search-results-overlay p strong {
+    color: var(--color-text-primary); /* Make labels slightly darker */
+    font-weight: 500;
+}
+
+/* Style the 'Close Search' button as a secondary action */
+.search-results-overlay button {
+    /* Copy styles from .all-students-section button (secondary/outline) */
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: auto; /* Don't force full width */
+    padding: var(--spacing-sm) var(--spacing-lg); /* Smaller padding for close */
+    border-radius: var(--border-radius-medium);
+    font-size: 0.9em;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color var(--transition-duration-short) var(--transition-easing-default),
+                color var(--transition-duration-short) var(--transition-easing-default),
+                transform var(--transition-duration-short) var(--transition-easing-default),
+                box-shadow var(--transition-duration-short) var(--transition-easing-default);
+    line-height: 1.3;
+    text-align: center;
+    margin-top: var(--spacing-lg); /* Space above button */
+    background-color: var(--color-bg-white);
+    color: var(--color-primary);
+    border: 1px solid var(--color-border);
+    box-shadow: var(--shadow-subtle);
+}
+
+.search-results-overlay button:hover,
+.search-results-overlay button:focus-visible {
+    background-color: var(--color-primary-ultralight);
+    border-color: var(--color-primary-light);
+    color: var(--color-primary-dark);
+    box-shadow: var(--shadow-interactive);
+    transform: translateY(-1px); /* Less lift */
+}
+
+.search-results-overlay button:active {
+    transform: scale(0.98);
+    background-color: var(--color-primary-light);
+    box-shadow: none;
+}
+
+/* --- Media Queries for Larger Screens (Enhanced Layout) --- */
+@media (min-width: 768px) { /* Adjusted breakpoint */
+    .calendar-page-container {
+        flex-direction: row;
+        justify-content: center;
+        align-items: flex-start;
+        padding: var(--spacing-xxl); /* More padding on desktop */
+        gap: var(--spacing-xl); /* Gap between calendar and money collected */
+    }
+
+    .calendar-container {
+        max-width: 450px; /* Maintain a focused calendar width */
+        margin: 0; /* Remove vertical margins */
+        flex-shrink: 0; /* Prevent shrinking */
+    }
+
+    .money-collected-container-on-calendar {
+        margin: 0; /* Remove vertical margins */
+        max-width: 320px; /* Slightly wider money collected */
+        flex-shrink: 0; /* Prevent shrinking */
+        /* Potentially align content differently if needed */
+    }
+
+    /* Increase base font size slightly on larger screens */
+    /* html {
+        font-size: 17px;
+    } */ /* Optional: consider if needed */
+
+    .calendar-day {
+        font-size: 0.95em; /* Slightly larger day numbers */
+    }
+}
+
+/* --- End of Enhanced Calendar.css --- */
