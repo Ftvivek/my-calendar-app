@@ -29,7 +29,7 @@ const pool = new Pool({
     database: process.env.APP_DB_TARGET, // <<<--- CONSISTENTLY USE APP_DB_TARGET
     password: process.env.DB_PASSWORD,
     port: parseInt(process.env.DB_PORT || '5432', 10),
-    ssl: { rejectUnauthorized: true } // Keep commented for now unless proven necessary
+    ssl: true
 });
 
 // Log the actual database name the pool IS configured with (using backticks ``)
@@ -73,7 +73,6 @@ const isValidDate = (dateString) => {
 
 // --- >>> Serve Static Frontend Files <<< ---
 // Serve files from the 'frontend_build' directory
-app.use(express.static(path.join(__dirname, 'frontend_build')));
 
 
 // --- >>> API Endpoints <<< ---
@@ -515,13 +514,6 @@ app.get('/api/students/:id', async (req, res) => {
 });
 
 
-// --- >>> Catch-all route to serve index.html for SPA routing <<< ---
-app.get('*', (req, res) => {
-  if (req.path.startsWith('/api/')) {
-      return res.status(404).send('API endpoint not found.');
-  }
-  res.sendFile(path.join(__dirname, 'frontend_build', 'index.html'));
-});
 
 
 // --- >>> Error Handling Middleware <<< ---

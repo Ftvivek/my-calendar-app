@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './Calendar.css'; // Ensure this path is correct and the enhanced CSS is being used
 import AddStudentForm from './AddStudentForm';
 import StudentList from './StudentList';

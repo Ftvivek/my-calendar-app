@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useParams, useNavigate } from 'react-router-dom'; // Import useNavigate
 import './StudentProfile.css';
 import { FaArrowLeft, FaUserCircle, FaSpinner, FaExclamationTriangle } from 'react-icons/fa';
 

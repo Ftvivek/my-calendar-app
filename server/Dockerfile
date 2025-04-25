@@ -17,7 +17,7 @@ COPY server/. .
 
 # Copy the BUILT frontend code from the root project's 'build' directory
 # into the 'frontend_build' directory inside the container.
-COPY build ./frontend_build
+#COPY build ./frontend_build
 
 # Make port 5000 available to the world outside this container
 EXPOSE 5000
