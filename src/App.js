@@ -10,15 +10,12 @@ function App() {
 
   // +++ Add this useEffect block +++
   useEffect(() => {
-    // This code runs once after the App component mounts (loads) in the browser
     console.log("--- App Component Mounted: Environment Variable Check ---");
-    // Log the value of the variable that *should* have been injected during build
     console.log("Value for REACT_APP_API_URL:", process.env.REACT_APP_API_URL);
-    // Also log the NODE_ENV to confirm if it's running in 'production' mode (as built by SWA)
     console.log("Value for NODE_ENV:", process.env.NODE_ENV);
+    console.log("Value for REACT_APP_TEST_VAR:", process.env.REACT_APP_TEST_VAR); // <<< ADD THIS LINE
     console.log("------------------------------------------------------");
-  }, []); // The empty array [] means this effect runs only once on initial mount
-  // +++ End of added block +++
+  }, []);
 
   return (
     <Router>
