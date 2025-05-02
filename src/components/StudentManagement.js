@@ -1,30 +1,29 @@
 import React, { useState, useEffect } from 'react';
-import './StudentManagement.css'; // Ensure this CSS file exists
-import { useParams, Link, useSearchParams } from 'react-router-dom'; // Removed unused useNavigate
+import './StudentManagement.css';
+import { useParams, Link, useSearchParams } from 'react-router-dom';
 import { FaSpinner, FaExclamationCircle, FaCheckCircle, FaTimesCircle, FaArrowLeft } from 'react-icons/fa';
 
-// New, more descriptive API endpoint for initial load
-const API_BASE_URL = '/api'; // Define base URL
+// --- CHANGE: Import the centralized Axios instance ---
+//import apiClient from '../api/axiosInstance';
+ // Adjust path if necessary
+import apiClient from '../axiosInstance.js';
+// --- CHANGE: Removed API_BASE_URL constant, as apiClient handles the base ---
 
 const StudentManagement = () => {
     const { date: routeDate } = useParams();
     const [searchParams] = useSearchParams();
-    const selectedDate = searchParams.get('date') || routeDate; // Prioritize query param
+    const selectedDate = searchParams.get('date') || routeDate;
 
-    // State for categorized student lists
+    // State declarations (remain the same)
     const [pendingStudents, setPendingStudents] = useState([]);
     const [paidStudents, setPaidStudents] = useState([]);
     const [suspendedStudents, setSuspendedStudents] = useState([]);
-
-    // State for tracking initial fetched state (for potential reverts on error)
     const [initialState, setInitialState] = useState({ pending: [], paid: [], suspended: [] });
-
-    // State for loading and errors during fetch/update
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [updatingStatus, setUpdatingStatus] = useState({}); // Tracks status per student name: true (loading), false (done), 'error'
+    const [updatingStatus, setUpdatingStatus] = useState({});
 
-    // --- Fetch Initial Data ---
+    // --- Fetch Initial Data (Refactored) ---
     useEffect(() => {
         if (!selectedDate) {
             setError("No date selected.");
@@ -32,157 +31,133 @@ const StudentManagement = () => {
             return;
         }
 
-        console.log("Fetching manageable students for date:", selectedDate);
-        setLoading(true);
-        setError(null);
-        setPendingStudents([]);
-        setPaidStudents([]);
-        setSuspendedStudents([]);
-        setUpdatingStatus({});
-        setInitialState({ pending: [], paid: [], suspended: [] }); // Reset initial state
+        const fetchManageableStudents = async () => { // Using async/await for cleaner look
+            console.log("Fetching manageable students for date:", selectedDate);
+            setLoading(true);
+            setError(null);
+            setPendingStudents([]);
+            setPaidStudents([]);
+            setSuspendedStudents([]);
+            setUpdatingStatus({});
+            setInitialState({ pending: [], paid: [], suspended: [] });
 
-        // Use the NEW specific endpoint for this page's logic
-        fetch(`${API_BASE_URL}/students/manageable-on-date/${selectedDate}`)
-            .then(response => {
-                if (!response.ok) {
-                    // Attempt to parse error message from backend response
-                    return response.json().catch(() => null).then(errData => {
-                        throw new Error(`HTTP error! status: ${response.status}${errData?.error ? ` - ${errData.error}` : ''}`);
-                    });
-                }
-                return response.json();
-            })
-            .then(data => {
+            // --- CHANGE: Define relative endpoint ---
+            const endpoint = `/students/manageable-on-date/${selectedDate}`;
+
+            try {
+                // --- CHANGE: Use apiClient.get ---
+                const response = await apiClient.get(endpoint);
+                const data = response.data; // Axios puts data directly here
+
                 console.log("Data received from /manageable-on-date:", data);
 
-                // Validate received data structure
+                // Validate and set state (logic remains the same)
                 const pending = Array.isArray(data?.pending) ? data.pending : [];
                 const paid = Array.isArray(data?.paid) ? data.paid : [];
                 const suspended = Array.isArray(data?.suspended) ? data.suspended : [];
 
-                // Set state for rendering - directly use the categorized data
-                setPendingStudents(pending.map(s => ({ ...s, status: 'pending' }))); // Add status for consistency if needed later
-                setPaidStudents(paid.map(s => ({ ...s, status: 'paid', paymentType: s.paymentType }))); // Ensure paymentType is present
-                setSuspendedStudents(suspended.map(s => ({ ...s, status: 'suspended' })));
+                const pendingWithStatus = pending.map(s => ({ ...s, status: 'pending' }));
+                const paidWithStatus = paid.map(s => ({ ...s, status: 'paid', paymentType: s.paymentType }));
+                const suspendedWithStatus = suspended.map(s => ({ ...s, status: 'suspended' }));
 
-                // Store the fetched categorized state for potential reverts
-                setInitialState({
-                    pending: pending.map(s => ({ ...s, status: 'pending' })),
-                    paid: paid.map(s => ({ ...s, status: 'paid', paymentType: s.paymentType })),
-                    suspended: suspended.map(s => ({ ...s, status: 'suspended' })),
-                });
+                setPendingStudents(pendingWithStatus);
+                setPaidStudents(paidWithStatus);
+                setSuspendedStudents(suspendedWithStatus);
+                setInitialState({ pending: pendingWithStatus, paid: paidWithStatus, suspended: suspendedWithStatus });
 
-                setLoading(false);
-            })
-            .catch(err => {
+            } catch (err) {
+                // --- CHANGE: Handle Axios error ---
                 console.error('Error fetching manageable students:', err);
-                setError(err.message || 'Failed to fetch student data.');
+                const errorMessage = err.response?.data?.error || err.response?.data?.message || err.message || 'Failed to fetch student data.';
+                setError(errorMessage);
+            } finally {
                 setLoading(false);
-            });
+            }
+        };
 
-    }, [selectedDate]); // Re-run only if selectedDate changes
+        fetchManageableStudents();
 
-    // --- Handle Status Updates ---
-    const handleStatusChange = async (studentName, studentId, statusType, isChecked) => { // Added studentId
+    }, [selectedDate]);
+
+    // --- Handle Status Updates (Refactored) ---
+    const handleStatusChange = async (studentName, studentId, statusType, isChecked) => {
         setUpdatingStatus(prev => ({ ...prev, [studentName]: true }));
 
-        // Simplified payload calculation: Start fresh based on action
+        // Payload calculation (logic remains the same)
         let payload = { cash: false, online: false, suspend: false };
+        if (statusType === 'cash' && isChecked) payload.cash = true;
+        else if (statusType === 'online' && isChecked) payload.online = true;
+        else if (statusType === 'suspend' && isChecked) payload.suspend = true;
 
-        if (statusType === 'cash' && isChecked) {
-            payload.cash = true;
-            // Assume setting paid overrides suspension
-        } else if (statusType === 'online' && isChecked) {
-            payload.online = true;
-            // Assume setting paid overrides suspension
-        } else if (statusType === 'suspend' && isChecked) {
-            payload.suspend = true;
-            // Assume setting suspended overrides payment
-        }
-        // If unchecking, all payload flags remain false unless another is explicitly set.
+        // --- CHANGE: Define relative endpoint for update ---
+        const endpoint = `/student-payment-status/${selectedDate}/${encodeURIComponent(studentName)}`;
 
         try {
-            // Use the existing PUT endpoint which correctly targets the specific date
-            const response = await fetch(`${API_BASE_URL}/student-payment-status/${selectedDate}/${encodeURIComponent(studentName)}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload),
-            });
+            // --- CHANGE: Use apiClient.put, passing payload directly ---
+            // Axios automatically sets Content-Type: application/json and stringifies
+            await apiClient.put(endpoint, payload);
 
-            if (!response.ok) {
-                let errorMsg = `Update failed (HTTP ${response.status})`;
-                try { const errorData = await response.json(); errorMsg = errorData.error || errorMsg; } catch (e) { /* Ignore */ }
-                throw new Error(errorMsg);
-            }
-
-            // --- Optimistic UI Update on Success ---
-            // Find student in ANY current list (more robust)
+            // --- Optimistic UI Update on Success (Logic remains the same) ---
             const studentData = pendingStudents.find(s => s.name === studentName) ||
                                 paidStudents.find(s => s.name === studentName) ||
                                 suspendedStudents.find(s => s.name === studentName) ||
-                                { id: studentId, name: studentName }; // Fallback if not found (unlikely)
+                                { id: studentId, name: studentName };
 
-
-            // Create copies and filter out the student
             let nextPending = pendingStudents.filter(s => s.name !== studentName);
             let nextPaid = paidStudents.filter(s => s.name !== studentName);
             let nextSuspended = suspendedStudents.filter(s => s.name !== studentName);
 
-            // Add student to the new correct list based on the payload sent
             if (payload.suspend) {
                 nextSuspended.push({ ...studentData, status: 'suspended' });
             } else if (payload.cash || payload.online) {
                 nextPaid.push({ ...studentData, status: 'paid', paymentType: payload.cash ? 'cash' : 'online' });
-            } else { // Neither paid nor suspended -> becomes pending
+            } else {
                 nextPending.push({ ...studentData, status: 'pending' });
             }
 
-            // Update state (sort for consistency)
-            setPendingStudents(nextPending.sort((a, b) => a.name.localeCompare(b.name)));
-            setPaidStudents(nextPaid.sort((a, b) => a.name.localeCompare(b.name)));
-            setSuspendedStudents(nextSuspended.sort((a, b) => a.name.localeCompare(b.name)));
+            // Sorting for consistency
+            nextPending.sort((a, b) => a.name.localeCompare(b.name));
+            nextPaid.sort((a, b) => a.name.localeCompare(b.name));
+            nextSuspended.sort((a, b) => a.name.localeCompare(b.name));
 
-            // Also update the initial state snapshot to reflect the successful change
+            // Update state and snapshot
+            setPendingStudents(nextPending);
+            setPaidStudents(nextPaid);
+            setSuspendedStudents(nextSuspended);
             setInitialState({ pending: nextPending, paid: nextPaid, suspended: nextSuspended });
 
             setUpdatingStatus(prev => ({ ...prev, [studentName]: false })); // Clear loading
 
         } catch (err) {
+            // --- CHANGE: Handle Axios error ---
             console.error(`Error updating status for ${studentName}:`, err);
-            setUpdatingStatus(prev => ({ ...prev, [studentName]: 'error' })); // Set error state
+            setUpdatingStatus(prev => ({ ...prev, [studentName]: 'error' }));
 
-            // --- Revert UI on Error ---
-            // Simply reset state to the last known *good* state stored in initialState
-            // This avoids complex logic of finding original state if multiple updates happened quickly
+            // --- Revert UI on Error (Logic remains the same) ---
             setPendingStudents([...initialState.pending]);
             setPaidStudents([...initialState.paid]);
             setSuspendedStudents([...initialState.suspended]);
 
-            // Optional: Add a timeout to clear the error icon after a few seconds
-            // setTimeout(() => {
-            //     setUpdatingStatus(prev => ({ ...prev, [studentName]: false }));
-            // }, 5000);
+            // Optional: Add timeout to clear error icon
+            // setTimeout(() => { setUpdatingStatus(prev => ({ ...prev, [studentName]: false })); }, 5000);
         }
     };
 
-    // --- Render Action Checkboxes ---
-    // This now renders actions for PENDING students only, as per your requirement interpretation
+    // --- Render Action Checkboxes (Logic remains the same) ---
     const renderStudentActions = (student) => {
         const updateState = updatingStatus[student.name];
 
-        // Show spinner or error first if applicable
         if (updateState === true) return <FaSpinner className="icon-spinner" aria-label="Processing..." />;
         if (updateState === 'error') {
             return (
                 <div className="action-error-state">
                     <FaExclamationCircle className="icon-error" title={`Update failed for ${student.name}`} />
-                    {/* Optionally add a manual retry button instead of checkboxes */}
-                    {/* <button onClick={() => handleStatusChange(student.name, student.id, 'retry', true)}>Retry</button> */}
+                    {/* Optional retry logic could be added here */}
                 </div>
             );
         }
 
-        // Only show checkboxes for students currently in the pending list
+        // Only show checkboxes if student is currently in the pending list
         if (pendingStudents.some(p => p.name === student.name)) {
             return (
                 <div className="action-checkboxes">
@@ -198,14 +173,13 @@ const StudentManagement = () => {
                 </div>
             );
         }
-
-        // Return null or empty if student is not pending (already paid/suspended)
-        return null;
+        return null; // No actions if not pending
     };
 
-    // --- Main Render ---
+    // --- Main Render (JSX Structure remains the same) ---
     return (
         <div className="student-management-container">
+            {/* Back Link, Title */}
             <Link to="/" className="btn btn-info back-link mb-3">
                 <FaArrowLeft /> Back to Calendar
             </Link>
@@ -217,10 +191,10 @@ const StudentManagement = () => {
             {/* Error State */}
             {error && <div className="error-state alert alert-danger"><FaExclamationCircle /> Error: {error}</div>}
 
-            {/* Content */}
+            {/* Content Sections */}
             {!loading && !error && selectedDate && (
                 <>
-                    {/* Pending Students Section */}
+                    {/* Pending Section */}
                     <section className="status-section card mb-3">
                         <div className="card-header"><h3>Pending Action</h3></div>
                         <div className="card-body">
@@ -228,15 +202,10 @@ const StudentManagement = () => {
                                 <p className="text-muted">No students require action for this day.</p>
                             ) : (
                                 <table className="table table-striped table-hover student-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
+                                    <thead><tr><th>Name</th><th>Actions</th></tr></thead>
                                     <tbody>
                                         {pendingStudents.map(student => (
-                                            <tr key={student.id}> {/* Use ID as key */}
+                                            <tr key={student.id || student.name}> {/* Prefer ID if available */}
                                                 <td data-label="Name">
                                                     <Link to={`/student-profile/${student.id}`} className="student-name-link">
                                                         {student.name}
@@ -251,8 +220,8 @@ const StudentManagement = () => {
                         </div>
                     </section>
 
-                    {/* Paid Students Section */}
-                     <section className="status-section card mb-3">
+                    {/* Paid Section */}
+                    <section className="status-section card mb-3">
                          <div className="card-header bg-success text-white"><h3><FaCheckCircle /> Paid Students</h3></div>
                         <div className="card-body">
                             {paidStudents.length === 0 ? (
@@ -260,12 +229,10 @@ const StudentManagement = () => {
                             ) : (
                                 <ul className="list-group list-group-flush">
                                     {paidStudents.map(student => (
-                                        <li key={student.id} className="list-group-item d-flex justify-content-between align-items-center">
+                                        <li key={student.id || student.name} className="list-group-item d-flex justify-content-between align-items-center">
                                             <Link to={`/student-profile/${student.id}`} className="student-name-link">
-                                                {/* Display payment type */}
                                                 {student.name} ({student.paymentType || 'Paid'})
                                             </Link>
-                                            {/* Show spinner/error only if this paid student is being updated */}
                                             {updatingStatus[student.name] === true && <FaSpinner className="icon-spinner list-icon" />}
                                             {updatingStatus[student.name] === 'error' && <FaExclamationCircle className="icon-error list-icon" title="Update failed"/>}
                                         </li>
@@ -275,8 +242,8 @@ const StudentManagement = () => {
                         </div>
                     </section>
 
-                    {/* Suspended Students Section */}
-                     <section className="status-section card mb-3">
+                    {/* Suspended Section */}
+                    <section className="status-section card mb-3">
                         <div className="card-header bg-danger text-white"><h3><FaTimesCircle /> Suspended Students</h3></div>
                          <div className="card-body">
                             {suspendedStudents.length === 0 ? (
@@ -284,11 +251,10 @@ const StudentManagement = () => {
                             ) : (
                                 <ul className="list-group list-group-flush">
                                     {suspendedStudents.map(student => (
-                                         <li key={student.id} className="list-group-item d-flex justify-content-between align-items-center">
+                                         <li key={student.id || student.name} className="list-group-item d-flex justify-content-between align-items-center">
                                             <Link to={`/student-profile/${student.id}`} className="student-name-link">
                                                 {student.name}
                                             </Link>
-                                            {/* Show spinner/error only if this suspended student is being updated */}
                                             {updatingStatus[student.name] === true && <FaSpinner className="icon-spinner list-icon" />}
                                             {updatingStatus[student.name] === 'error' && <FaExclamationCircle className="icon-error list-icon" title="Update failed"/>}
                                         </li>

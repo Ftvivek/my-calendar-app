@@ -1,20 +1,23 @@
 // MoneyCollected.js
 import React, { useState, useEffect } from 'react';
-import './MoneyCollected.css'; // Make sure you have this CSS file for styling
+import './MoneyCollected.css'; // Make sure you have this CSS file
 
-// Helper function to get today's date in YYYY-MM-DD format (remains the same)
+// --- CHANGE: Import the centralized Axios instance ---
+import apiClient from '../axiosInstance'; // Adjust path if necessary
+
+// Helper function to get today's date in YYYY-MM-DD format
 const getTodayDateString = () => {
+    // Using 'en-CA' format (YYYY-MM-DD) which is suitable for date inputs
     return new Date().toLocaleDateString('en-CA');
 };
 
 const MoneyCollected = () => {
-    // State declarations (remain the same)
     const [onlineCount, setOnlineCount] = useState(0);
     const [cashCount, setCashCount] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
     const [selectedDate, setSelectedDate] = useState(getTodayDateString());
-    const paymentPerStudent = 500;
+    const paymentPerStudent = 500; // Assuming this is constant
 
     // Fetch data whenever selectedDate changes
     useEffect(() => {
@@ -28,60 +31,43 @@ const MoneyCollected = () => {
 
             setIsLoading(true);
             setError(null);
-            setOnlineCount(0);
+            setOnlineCount(0); // Reset counts before fetching
             setCashCount(0);
 
-            // --- *** START OF CORRECTION *** ---
+            // --- *** START OF CORRECTION (Using apiClient) *** ---
 
-            // 1. Get the Base API URL from the environment variable configured in SWA
-            const baseApiUrl = process.env.REACT_APP_API_URL;
-
-            // 2. IMPORTANT: Check if the environment variable is set.
-            //    If not, the build didn't get it, and API calls cannot work.
-            if (!baseApiUrl) {
-                 console.error("FATAL: REACT_APP_API_URL environment variable is not defined!");
-                 setError("Application configuration error: API URL missing.");
-                 setIsLoading(false);
-                 return; // Stop execution if URL is missing
-            }
-
-            // 3. Construct the FULL absolute API URL
-            const apiUrl = `${baseApiUrl}/api/collection/${selectedDate}`;
-
-            // --- *** END OF CORRECTION *** ---
-
-            console.log(`Fetching collection data from: ${apiUrl}`); // Log the full URL for debugging
+            // 1. Define the specific endpoint path for this request
+            const endpoint = `/api/collection/${selectedDate}`;
+            console.log(`Fetching collection data from endpoint: ${endpoint}`); // Log relative path
 
             try {
-                // 4. Use the full absolute apiUrl in the fetch call
-                const response = await fetch(apiUrl);
+                // 2. Use the apiClient instance (.get) with the relative endpoint path
+                //    The base URL (REACT_APP_API_URL) is automatically prepended by the instance.
+                const response = await apiClient.get(endpoint);
 
-                if (!response.ok) {
-                    let errorMsg = `HTTP error! Status: ${response.status}`;
-                    try {
-                        const errorData = await response.json();
-                        errorMsg = errorData.error || errorMsg;
-                    } catch (parseError) {
-                        // Ignore if response wasn't JSON
-                    }
-                    throw new Error(errorMsg);
-                }
+                // 3. Access data directly from response.data (Axios specific)
+                const data = response.data;
 
-                const data = await response.json();
+                // Process the data (remains the same)
                 setOnlineCount(parseInt(data.onlineCount) || 0);
                 setCashCount(parseInt(data.cashCount) || 0);
 
             } catch (err) {
+                // 4. Handle Axios errors (more structured than fetch errors)
                 console.error("Failed to fetch collection data:", err);
-                setError(err.message || 'Failed to fetch collection data.');
+                // Try to get a specific error message from the response, fallback to general message
+                const errorMessage = err.response?.data?.error || err.response?.data?.message || err.message || 'Failed to fetch collection data.';
+                setError(errorMessage);
             } finally {
+                // 5. Ensure loading state is always turned off
                 setIsLoading(false);
             }
+            // --- *** END OF CORRECTION (Using apiClient) *** ---
         };
 
         fetchCollectionData();
 
-    }, [selectedDate]); // Dependency array remains the same
+    }, [selectedDate]); // Dependency array is correct
 
     // Handler for date input change (remains the same)
     const handleDateChange = (event) => {
@@ -95,6 +81,7 @@ const MoneyCollected = () => {
         ? "Today's Collection"
         : `Collection for ${selectedDate}`;
 
+    // --- Return JSX (unchanged structure) ---
     return (
         <div className="money-collected-container">
             <div className="money-collected-header">
