@@ -19,7 +19,7 @@ const host = '0.0.0.0'; // Listen on all network interfaces
 
 // Configure CORS properly for production
 const allowedOrigins = [
-    'https://d30wi6koyxhv8f.cloudfront.net', // Your deployed frontend URL
+    'https://d28gnj3ee0v7hm.cloudfront.net', // Your deployed frontend URL
     'http://localhost:3000' // Allow local development frontend
 ];
 
